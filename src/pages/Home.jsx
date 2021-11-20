@@ -83,7 +83,7 @@ const Home = props => {
 
     colors.forEach(color => color.addEventListener("click", changeColor));
     sizes.forEach(size => size.addEventListener("click", changeSize));
-    // changeHeight();
+    changeHeight();
   }, []);
   window.addEventListener("resize", changeHeight);
 
