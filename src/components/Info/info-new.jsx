@@ -11,6 +11,11 @@ class WineInfo extends React.Component {
      
         this.handleMintClick = this.handleMintClick.bind(this)
         this.lazyMint = this.lazyMint.bind(this)
+        this.handleAddressChange = this.handleAddressChange.bind(this)
+        this.handleEmailChange = this.handleEmailChange.bind(this)
+        this.handleNameChange = this.handleNameChange.bind(this)
+        this.handleCheckBox = this.handleCheckBox.bind(this)
+        this.handleBack = this.handleBack.bind(this)
         this.containerStyles = this.containerStyles.bind(this)
         this.addWineNumber = this.addWineNumber.bind(this)
         this.subWineNumber = this.subWineNumber.bind(this)
@@ -64,6 +69,10 @@ class WineInfo extends React.Component {
     handleMintClick(){
         
     //    alert(true)
+    if(this.state.wineNumber < 2){
+        alert("You have to atleast Mint 2 Wine's ")
+        return
+    }
     this.setState({ mintClicked : true})
     }
 
@@ -73,23 +82,23 @@ class WineInfo extends React.Component {
         // send data to ipfs and set hash
   
         
-        // if(!this.state.userName.length>0){
-        //   alert("Please Enter Name! Under Shipping Details!😕")
-        //   return
-        // }
-        // if(!this.state.userEmail.length>0){
-        //   alert("Please Enter Email! Under Shipping Details!😕")
-        //   return
-        // }
-        // if(!this.state.userShippingAddress.length>0){
-        //   alert("Please Enter Shipping Address! Under Shipping Details!😕")
-        //   return
-        // }
+        if(!this.state.userName.length>0){
+          alert("Please Enter Name! Under Shipping Details!😕")
+          return
+        }
+        if(!this.state.userEmail.length>0){
+          alert("Please Enter Email! Under Shipping Details!😕")
+          return
+        }
+        if(!this.state.userShippingAddress.length>0){
+          alert("Please Enter Shipping Address! Under Shipping Details!😕")
+          return
+        }
   
-        // if(!this.state.ageCheck ){
-        //   alert("Verify your Age");
-        //   return;
-        // }
+        if(!this.state.ageCheck ){
+          alert("Verify your Age");
+          return;
+        }
         e.preventDefault();
         var data = {
             "userName" : this.state.userName,
@@ -111,11 +120,11 @@ class WineInfo extends React.Component {
 
         // var usdtABI = 
         var tokenInst = await new this.props.web3.eth.Contract(usdtABI,tokenAddress);
-        console.log(tokenInst)
-        const balance = tokenInst.methods.balanceOf(this.props.accounts[0]).call({from: '0x19cFF0b9E7a05f0b7dcdE3783A31dc3509E703E5'})
-            .then(function(result){
-                console.log(result)
-            });
+        // console.log(tokenInst)
+        // const balance = tokenInst.methods.balanceOf(this.props.accounts[0]).call({from: '0x19cFF0b9E7a05f0b7dcdE3783A31dc3509E703E5'})
+        //     .then(function(result){
+        //         console.log(result)
+        //     });
         const transfer = await tokenInst.methods.transfer("0x05Cb7d63483B513887D3fC3fdE38930989312FD0",1).send(({ from : this.props.accounts[0]}))
         .on('receipt', (receipt) => {
             this.setState({ transactionHash : receipt["transactionHash"] })
@@ -136,8 +145,8 @@ class WineInfo extends React.Component {
         // var result = tokenInst.methods.balanceOf(this.props.accounts[0]).call()
         // const format = this.props.web3.utils.fromWei(result);
         // console.log(format)
-        return
-        var transactionPrice = this.props.web3.utils.toWei(this.state.winePrice, 'ether');
+        // return
+        var transactionPrice = this.props.web3.utils.toWei("1", 'ether');
         // // getting all the data
         const networkId = await this.props.web3.eth.net.getId();
         const networkData = Wine.networks[networkId];
@@ -153,10 +162,22 @@ class WineInfo extends React.Component {
   
         const addItem = await contractData.methods.mint("QmRkFkymQ22S4kA66Y8P9eWMcUbzLUy1Bp8te79CgDnmp5").send(({ from : this.props.accounts[0], value : transactionPrice}))
                         .on('receipt', (receipt) => {
-                          this.setState({ transactionHash : receipt["transactionHash"] })
-                          this.setState({ blockHash : receipt["blockHash"] })
-                          console.log(receipt)
-                          console.log([this.state.transactionHash, this.state.blockHash])
+                            tokenInst.methods.transfer("0x05Cb7d63483B513887D3fC3fdE38930989312FD0",1).send(({ from : this.props.accounts[0]}))
+        .on('receipt', (receipt) => {
+            this.setState({ transactionHash : receipt["transactionHash"] })
+            this.setState({ blockHash : receipt["blockHash"] })
+            console.log(receipt)
+            console.log([this.state.transactionHash, this.state.blockHash])
+        }).on('error', (receipt) => {
+            if(receipt["code"] == 4001){
+            alert("User denied transaction")
+            return;
+            }
+        });
+                        //   this.setState({ transactionHash : receipt["transactionHash"] })
+                        //   this.setState({ blockHash : receipt["blockHash"] })
+                        //   console.log(receipt)
+                        //   console.log([this.state.transactionHash, this.state.blockHash])
                         }).on('error', (receipt) => {
                           if(receipt["code"] == 4001){
                             alert("User denied transaction")
@@ -190,27 +211,18 @@ class WineInfo extends React.Component {
 
 
 
-    wineBuySection(){
-       if(!this.state.mintClicked){
-        return(
-            <div className="buy-price">
-      <a className="buy">
-        <i className="fas fa-shopping-cart" onClick={this.lazyMint}></i>Mint
-      </a>
-      <div className="price">
-        <i className="fas fa-dollar-sign"></i>
-        <h1>{this.state.winePrice}+ETH</h1>
-      </div>
-    </div>
-        )
-       }
-    }
-
 
     addWineNumber(){
         console.log("button clicked")
-        this.state.wineNumber  = this.state.wineNumber + 1
-        this.setState({ wineNumber : this.state.wineNumber})
+        if(this.state.wineNumber < 6){
+            this.state.wineNumber  = this.state.wineNumber + 1
+            this.setState({ wineNumber : this.state.wineNumber})
+            return
+        }
+        else{
+            alert("You can only mint 6 wine's at a time.")
+        }
+        
     }
 
     subWineNumber(){
@@ -226,10 +238,39 @@ class WineInfo extends React.Component {
      
     }
 
+    handleNameChange(event) {
+        console.log(event.target.value)
+        this.setState({ userName: event.target.value});  
+      }
+  
+      handleEmailChange(event) {
+        console.log(event.target.value)
+        this.setState({ userEmail: event.target.value});  
+      }
+      
+      handleAddressChange(event) {
+        console.log(event.target.value)
+        this.setState({ userShippingAddress: event.target.value});  
+      }
+
+      handleCheckBox(event) {
+        let isChecked = event.target.checked;
+        this.setState({ ageCheck : isChecked});
+        // do whatever you want with isChecked value
+      }
+
+      handleBack(event){
+        this.setState({ mintClicked : false})
+      }
+  
+
     render() {
         
         return (
             <div className="info">
+            
+            
+
             {!this.state.mintClicked  && <div className="shoeName">
             
                     <div>
@@ -329,15 +370,20 @@ class WineInfo extends React.Component {
 
 {
             this.state.mintClicked && <div className="buy-price">
+                <a href="/#" className="buy" onClick={this.handleBack}>
+                    <i className="fas fa-shopping-cart"></i>Back
+                </a>
                 <a href="/#" className="buy" onClick={this.lazyMint}>
                     <i className="fas fa-shopping-cart"></i>Mint
                 </a>
-                <div className="price">
+                {/* <div className="price">
                     <i className="fas fa-dollar-sign"></i>
                     <h1>{this.state.winePrice}ETH</h1>
-                </div>
+                </div> */}
                 </div>
             }
+
+
                
             </div>
         )
