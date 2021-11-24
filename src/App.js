@@ -1,6 +1,7 @@
 import React from "react";
 import Home from "./pages/Home";
 import Header from "./pages/header";
+import ShowError from "./components/Info/error";
 // import logo from './logo.svg';
 // import './App.css';
 // import Home from './pages/home'
@@ -49,6 +50,7 @@ class App extends React.Component {
       accounts : [],
       sdk:null,
       web3:null,
+      networkId:null
 
     }
   }
@@ -69,8 +71,9 @@ class App extends React.Component {
 
       if (window.ethereum) {
         this.handleInit()
-        // console.log("going in if")
+        console.log("going in if")
       } else {
+        
         window.addEventListener('ethereum#initialized', this.handleInit, {
           once: true,
         })
@@ -95,8 +98,13 @@ class App extends React.Component {
       console.log(this.state.sdk);
   }
 
+    async setNetworkId(currentId){
+      await this.setState({ networkId : currentId })
+    }
+
     async handleInit(){
     const { ethereum } = window
+    console.log(ethereum+"eth obj")
 		if (ethereum && ethereum.isMetaMask) {
 			console.log('Ethereum successfully detected!')
 			this.setProvider(ethereum)
@@ -104,9 +112,13 @@ class App extends React.Component {
 			// add listener on accountsChanged event to render actual address
 			// ethereum.on('accountsChanged', this.state.accounts)
       ethereum.on('accountsChanged', this.setAccounts);
+      // ethereum.on('')
     
 		// 	// // configure web3
 			const web3 = new Web3(ethereum)
+      const networkId = await web3.eth.net.getId();
+      this.setNetworkId(networkId)
+      // console.log("given provider"+networkId)
       await this.setWeb3Obj(web3)
 
 			// // set current account if already connected
@@ -115,20 +127,33 @@ class App extends React.Component {
         console.log(e)
 			})
 		} else {
-			console.log('Please install MetaMask!')
+			alert('Please install MetaMask!')
 		}
   }
     render() {
-        
+      console.log(this.state.networkId)
+      if (this.state.networkId != 137 && this.state.networkId != 80001){
+        return(<ShowError message={"Please Switch to Polygon Network & Reload!"}/>)
+        return
+      }
+      // if (networkId != 137 && networkId != 80001){
+      //   alert("Please switch to Polygon Network!")
+      //   return
+      // }
+        if(!this.state.provider?.isMetaMask){
+          return(<ShowError message={"Please Install MetaMask!"}/>)
+        }
+       else{
         return (
           <div>
-          <Header provider={this.state.provider} accounts={this.state.accounts} />
+          <Header provider={this.state.provider} accounts={this.state.accounts} web3={this.state.web3} />
         <div className="App">
           
           <Home provider={this.state.provider} accounts={this.state.accounts} web3={this.state.web3} />
         </div>
        </div>
         )
+       }
     }
 }
 

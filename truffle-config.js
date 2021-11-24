@@ -24,7 +24,7 @@
  // const mnemonic = fs.readFileSync(".secret").toString().trim();
  
  const private_keys = [
-   'be73bec66eb410eed1f480eb57f41c38f58655ee0a348662fd9c9aca93a88146',
+   '9753c5bd78c4cea7b8cf129120b0cdd71b1f801d891cea118f1ff86b9d6ba20a',
    '935f3448873980925d1fcaf3a3f5ba28d3ce623a5095b82a4049053a36a4fc5c'
  ]
  
@@ -76,6 +76,18 @@
      timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
      skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
      },
+      polygon: {
+     provider: () => new HDWalletProvider({
+         privateKeys : private_keys,
+         providerOrUrl : "https://polygon-mumbai.infura.io/v3/7bd3214960614e0ebc9bd32527be9bb3",
+         numberOfAddresses : 2
+     }),
+     network_id: 80001 ,       // Ropsten's id
+     gas: 5500000,        // Ropsten has a lower block limit than mainnet
+     confirmations: 2,    // # of confs to wait between deployments. (default: 0)
+     timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
+     skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
+     }
      // Useful for private networks
      // private: {
      // provider: () => new HDWalletProvider(mnemonic, `https://network.io`),

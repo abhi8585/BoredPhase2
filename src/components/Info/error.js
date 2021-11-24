@@ -39,13 +39,13 @@ class ShowError extends React.Component {
           <div className="page-404">
             <div className="page-404__wrap">
               <div className="page-404__content">
-                <h1 className="page-404__title">404</h1>
-                <p className="page-404__text">
-                  Install Metamask to use this Application
-                </p>
-                <a href="index.html" className="page-404__btn">
+                <h5 className="page-404__title">{this.props.message}</h5>
+                {/* <p className="page-404__text">
+                  Connect to Polygon Network
+                </p> */}
+                {/* <a href="index.html" className="page-404__btn">
                   
-                </a>
+                </a> */}
               </div>
             </div>
           </div>

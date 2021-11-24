@@ -10,12 +10,23 @@ class Header extends React.Component {
         
     }
 
-    connectWalletHandler() {
+    async connectWalletHandler() {
+      
+      // if (networkId != 137 && networkId != 80001){
+      //   alert("Please switch to Polygon Network!")
+      //   return
+      // }
+      // console.log(networkId)
         console.log("button clicked")
         console.log(this.props.provider)
         // console.log(this.props.provider?.selectedAddress)
         console.log(this.props.accounts)
+        if(this.props.accounts.length > 0){
+          alert("Wallet already connected!!")
+          return
+        }
         this.props.provider.request({ method: 'eth_requestAccounts' })
+        // alert("Wallet connected successfully!!")
       }
 
     render() {
@@ -26,12 +37,12 @@ class Header extends React.Component {
                 <header className="header">
     <div className="header__content">
       <div className="header__menu">
-        {/* <ul className="header__nav">
+        <ul className="header__nav">
           <li className="header__nav-item" style={{color:"white"}}>
           <Link to={`/`}>BoredWineClub
                     </Link>
           </li>
-        </ul> */}
+        </ul>
      
       </div>
       {/* <form action="#" class="header__search">
@@ -220,9 +231,10 @@ class Header extends React.Component {
                 
                 >
                 <span>Wallet Connected</span>
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                    <path d="M20,12a1,1,0,0,0-1-1H11.41l2.3-2.29a1,1,0,1,0-1.42-1.42l-4,4a1,1,0,0,0-.21.33,1,1,0,0,0,0,.76,1,1,0,0,0,.21.33l4,4a1,1,0,0,0,1.42,0,1,1,0,0,0,0-1.42L11.41,13H19A1,1,0,0,0,20,12ZM17,2H7A3,3,0,0,0,4,5V19a3,3,0,0,0,3,3H17a3,3,0,0,0,3-3V16a1,1,0,0,0-2,0v3a1,1,0,0,1-1,1H7a1,1,0,0,1-1-1V5A1,1,0,0,1,7,4H17a1,1,0,0,1,1,1V8a1,1,0,0,0,2,0V5A3,3,0,0,0,17,2Z" />
-                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wallet-fill" viewBox="0 0 16 16">
+  <path d="M1.5 2A1.5 1.5 0 0 0 0 3.5v2h6a.5.5 0 0 1 .5.5c0 .253.08.644.306.958.207.288.557.542 1.194.542.637 0 .987-.254 1.194-.542.226-.314.306-.705.306-.958a.5.5 0 0 1 .5-.5h6v-2A1.5 1.5 0 0 0 14.5 2h-13z"/>
+  <path d="M16 6.5h-5.551a2.678 2.678 0 0 1-.443 1.042C9.613 8.088 8.963 8.5 8 8.5c-.963 0-1.613-.412-2.006-.958A2.679 2.679 0 0 1 5.551 6.5H0v6A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-6z"/>
+</svg>
                 </a>}
             {/* <a onClick={this.connectWalletHandler}
                 className="header__action-btn header__action-btn--signin"
@@ -285,11 +297,11 @@ class Header extends React.Component {
           </ul>
         </div>
       </div>
-      <button className="header__btn" type="button">
+      {/* <button className="header__btn" type="button">
         <span />
         <span />
         <span />
-      </button>
+      </button> */}
     </div>
   </header>
   {/* end header */}
