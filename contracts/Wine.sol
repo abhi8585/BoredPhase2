@@ -10,6 +10,7 @@ contract Wine is ERC721, ERC721Enumerable {
 
     // to keep the wine count
     uint public wineCount = 0;
+    
 
     // to keep the track of ipfshash with data
     mapping(uint => string) public wineData;
@@ -51,12 +52,22 @@ contract Wine is ERC721, ERC721Enumerable {
             wineCount ++;
     }
 
-    function getContractBalance() public returns(uint){
-
-    return address(this).balance;
-
-
+    function _baseURI() internal view virtual override returns (string memory) {
+        return "https://ipfs.io/ipfs/";
     }
+
+    function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
+        // require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
+
+        string memory baseURI = _baseURI();
+        string memory tokenHash = wineData[tokenId];
+        return string(abi.encodePacked(baseURI, tokenHash));
+        // return bytes(baseURI).length > 0 ? string(abi.encodePacked(baseURI, tokenId.toString())) : "";
+    }
+
+    
+
+  
 }
 
 // make an array so that we can fetch the object on UI part.

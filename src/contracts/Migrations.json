@@ -2136,11 +2136,17 @@
     "version": "0.8.0+commit.c7dfd78e.Linux.g++"
   },
   "networks": {
+    "4": {
+      "events": {},
+      "links": {},
+      "address": "0x9D8EDf47996f7f5504ef025A6b7A6DA1a705bA01",
+      "transactionHash": "0x627082361313387412bb7d671d7406ee16df282ed7d26efc4612ffc9362fc786"
+    },
     "5777": {
       "events": {},
       "links": {},
-      "address": "0x0dA38a13372376c4fA65BE4F42caD97286EB516c",
-      "transactionHash": "0x0bc71a0966b3a7afa932f9307ba95b76cccec55f836e638fceeb0ff1ed2cfc67"
+      "address": "0x81dF306566f16bef855c91C0D3BBC3621f38300a",
+      "transactionHash": "0x88f362c9e3c3e7c8a35ef31fb267b118069e394420288794e36ead38b6f0de0f"
     },
     "80001": {
       "events": {},
@@ -2150,7 +2156,7 @@
     }
   },
   "schemaVersion": "3.4.3",
-  "updatedAt": "2021-11-24T19:42:05.926Z",
+  "updatedAt": "2021-11-25T20:36:03.442Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

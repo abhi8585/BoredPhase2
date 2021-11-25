@@ -87,7 +87,20 @@
      confirmations: 2,    // # of confs to wait between deployments. (default: 0)
      timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
      skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
-     }
+     },
+
+     rinkeby: {
+      provider: () => new HDWalletProvider({
+          privateKeys : private_keys,
+          providerOrUrl : "https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161",
+          numberOfAddresses : 2
+      }),
+      network_id: 4 ,       // Ropsten's id
+      gas: 5500000,        // Ropsten has a lower block limit than mainnet
+      confirmations: 2,    // # of confs to wait between deployments. (default: 0)
+      timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
+      skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
+      },
      // Useful for private networks
      // private: {
      // provider: () => new HDWalletProvider(mnemonic, `https://network.io`),

@@ -5,6 +5,7 @@ import Wine from "../../contracts/Wine.json";
 import ipfs from "./ipfs";
 import{ init } from 'emailjs-com';
 import emailjs from 'emailjs-com';
+import ShowError from './error';
 
 class WineInfo extends React.Component {
 
@@ -102,12 +103,50 @@ class WineInfo extends React.Component {
           return;
         }
         e.preventDefault();
+        // var data = {
+        //     "userName" : this.state.userName,
+        //     "userEmail" : this.state.userEmail,
+        //     "userShippingAddress" : this.state.userShippingAddress,
+        //     // "itemData" : this.itemData
+        //   }
         var data = {
-            "userName" : this.state.userName,
-            "userEmail" : this.state.userEmail,
-            "userShippingAddress" : this.state.userShippingAddress,
-            // "itemData" : this.itemData
-          }
+          "description": "This is one of the best available red wine in the market.", 
+          "external_url": "https://openseacreatures.io/3", 
+          "image": "https://ipfs.io/ipfs/QmYqKF4KQ1eAgoQUYue418ugZUiBHweaJDwQYdQJJpNkhn", 
+          "name": "Pinot Noir",
+          "attributes": [
+            {
+              "trait_type": "Producer", 
+              "value": "Floral notes"
+            }, 
+            {
+              "trait_type": "Variety", 
+              "value": "Red Wine"
+            }, 
+            {
+              "trait_type": "Region", 
+              "value": "Europe"
+            }, 
+            {
+              "trait_type": "Alchohol", 
+              "value": "17.5"
+            }, 
+            {
+              "trait_type": "Volume", 
+              "value": "850ml"
+            }, 
+           
+            {
+              "display_type": "number", 
+              "trait_type": "Wine Count", 
+              "value": 6
+            }
+          ], 
+        }
+        
+        
+
+
         console.log(data);
          const itemData = await JSON.stringify(data)
         const itemBuffer = await Buffer.from(itemData);
