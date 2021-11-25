@@ -2,6 +2,7 @@ import React from "react";
 import Home from "./pages/Home";
 import Header from "./pages/header";
 import ShowError from "./components/Info/error";
+// import Particles from "react-tsparticles";
 // import logo from './logo.svg';
 // import './App.css';
 // import Home from './pages/home'
@@ -20,7 +21,10 @@ import Web3 from "web3"
 // import ItemCollectionCreated from './pages/item-collection-created';
 // import FileUpload from './pages/file-upload';
 // import ShowError from './pages/error';
-
+import Particles from "react-tsparticles";
+// import logo from './logo.svg';
+// import './App.css';
+import particlesOptions from "./particles.json";
 
 
 
@@ -44,6 +48,9 @@ class App extends React.Component {
   constructor(props){
     super(props)
     this.setAccounts = this.setAccounts.bind(this)
+    this.particlesInit = this.particlesInit.bind(this)
+    this.particlesLoaded = this.particlesLoaded.bind(this)
+    this.setNetworkId = this.setNetworkId.bind(this)
     this.state = {
 
       provider : null,
@@ -54,6 +61,16 @@ class App extends React.Component {
 
     }
   }
+
+  particlesInit(main){
+    console.log(main);
+
+    // you can initialize the tsParticles instance (main) here, adding custom shapes or presets
+  };
+
+  particlesLoaded(container){
+    console.log(container);
+  };
 
     componentWillMount() {
 
@@ -146,11 +163,13 @@ class App extends React.Component {
        else{
         return (
           <div>
+            <Particles options={particlesOptions}/>
           <Header provider={this.state.provider} accounts={this.state.accounts} web3={this.state.web3} />
         <div className="App">
           
           <Home provider={this.state.provider} accounts={this.state.accounts} web3={this.state.web3} />
         </div>
+       {/* <Particles id="tsparticles" url="http://foo.bar/particles.json" init={this.particlesInit} loaded={this.particlesLoaded} /> */}
        </div>
         )
        }
