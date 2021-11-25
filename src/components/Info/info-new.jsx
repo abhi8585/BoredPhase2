@@ -170,7 +170,7 @@ class WineInfo extends React.Component {
           console.log([this.state.transactionHash, this.state.blockHash])
         }).on('error', (receipt) => {
           if(receipt["code"] == 4001){
-            alert("User denied transaction")
+            alert("User denied transaction!! Please check")
             return;
           }
         });
