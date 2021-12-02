@@ -39,8 +39,8 @@ class Header extends React.Component {
       <div className="header__menu">
         <ul className="header__nav">
           <li className="header__nav-item" style={{color:"white"}}>
-          <Link to={`/`}>BoredWineClub
-                    </Link>
+          {/* <Link to={`/`}>BoredWineClub
+                    </Link> */}
           </li>
         </ul>
      

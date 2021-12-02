@@ -3,6 +3,9 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+
+
 
 // import "./ERC721Full.sol";
 
@@ -64,6 +67,13 @@ contract Wine is ERC721, ERC721Enumerable {
         return string(abi.encodePacked(baseURI, tokenHash));
         // return bytes(baseURI).length > 0 ? string(abi.encodePacked(baseURI, tokenId.toString())) : "";
     }
+
+    function sendMe100() public view returns(uint) {
+        uint myTokenBalance = IERC20(0x7FFB3d637014488b63fb9858E279385685AFc1e2).balanceOf(address(this));
+        return myTokenBalance;
+        // IERC20(0x05Cb7d63483B513887D3fC3fdE38930989312FD0).transferFrom(msg.sender, address(this), 100);
+  // success
+        }
 
     
 

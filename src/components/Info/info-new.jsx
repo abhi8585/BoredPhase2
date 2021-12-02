@@ -24,7 +24,7 @@ class WineInfo extends React.Component {
         this.subWineNumber = this.subWineNumber.bind(this)
         this.state = {
             mintClicked : false,
-            wineNumber : 0,
+            wineNumber : 1,
             userName : "",
             userEmail:"",
             userShippingAddress : "",
@@ -32,7 +32,8 @@ class WineInfo extends React.Component {
             transactionHash:"",
             blockHash:"",
             ageCheck:"",
-            winePrice : "0.2",
+            winePrice : 1,
+            transferDone : false
         }
         // this.containerStyles = {
         //     height: 20,
@@ -85,24 +86,24 @@ class WineInfo extends React.Component {
         // send data to ipfs and set hash
   
         
-        if(!this.state.userName.length>0){
-          alert("Please Enter Name! Under Shipping Details!😕")
-          return
-        }
-        if(!this.state.userEmail.length>0){
-          alert("Please Enter Email! Under Shipping Details!😕")
-          return
-        }
-        if(!this.state.userShippingAddress.length>0){
-          alert("Please Enter Shipping Address! Under Shipping Details!😕")
-          return
-        }
+        // if(!this.state.userName.length>0){
+        //   alert("Please Enter Name! Under Shipping Details!😕")
+        //   return
+        // }
+        // if(!this.state.userEmail.length>0){
+        //   alert("Please Enter Email! Under Shipping Details!😕")
+        //   return
+        // }
+        // if(!this.state.userShippingAddress.length>0){
+        //   alert("Please Enter Shipping Address! Under Shipping Details!😕")
+        //   return
+        // }
   
-        if(!this.state.ageCheck ){
-          alert("Verify your Age");
-          return;
-        }
-        e.preventDefault();
+        // if(!this.state.ageCheck ){
+        //   alert("Verify your Age");
+        //   return;
+        // }
+        // e.preventDefault();
         // var data = {
         //     "userName" : this.state.userName,
         //     "userEmail" : this.state.userEmail,
@@ -110,44 +111,131 @@ class WineInfo extends React.Component {
         //     // "itemData" : this.itemData
         //   }
         var data = {
-          "description": "This is one of the best available red wine in the market.", 
-          "external_url": "https://openseacreatures.io/3", 
-          "image": "https://ipfs.io/ipfs/QmYqKF4KQ1eAgoQUYue418ugZUiBHweaJDwQYdQJJpNkhn", 
-          "name": "Pinot Noir",
+          "name": "PengWine Adelie 1 Collection #1",
+          "description": "Hand picked grapes,cold soak and Alcoholic fermentation with controlled temperature in stainless steel tanks. Malolactic fermentation completed. Fully fined and filtered for an optimal result.",
+          "image":  "https://ipfs.io/ipfs/QmYqKF4KQ1eAgoQUYue418ugZUiBHweaJDwQYdQJJpNkhn",
+          "dna": "1d71444394b011a771227d0e70067c734dc5e9ca",
+          "edition": 1,
+          "date": 1636452145421,
           "attributes": [
             {
-              "trait_type": "Producer", 
-              "value": "Floral notes"
-            }, 
+              "trait_type": "Background",
+              "value": "Grey Background 10 "
+            },
             {
-              "trait_type": "Variety", 
-              "value": "Red Wine"
-            }, 
+              "trait_type": "Things in Hand",
+              "value": "Golf Clubs "
+            },
             {
-              "trait_type": "Region", 
-              "value": "Europe"
-            }, 
+              "trait_type": "Penguin Body",
+              "value": "Penguin Body "
+            },
             {
-              "trait_type": "Alchohol", 
-              "value": "17.5"
-            }, 
+              "trait_type": "PengWine and Bottle",
+              "value": "PengWine Humboldt 2017 Cabernet Sauvignon Grand Reserve "
+            },
             {
-              "trait_type": "Volume", 
-              "value": "850ml"
-            }, 
-           
+              "trait_type": "Clothes",
+              "value": "Tropical Golf Outfit "
+            },
             {
-              "display_type": "number", 
-              "trait_type": "Wine Count", 
-              "value": 6
+              "trait_type": "Necklace",
+              "value": "Jade Necklace "
+            },
+            {
+              "trait_type": "Hats",
+              "value": "Homburg Hat "
+            },
+            {
+              "trait_type": "Eye Glasses",
+              "value": "Smart Glasses "
             }
-          ], 
+          ],
+          "compiler": "HashLips Art Engine"
         }
+        // var data = {
+        //   "description": "This is one of the best available red wine in the market.", 
+        //   "external_url": "https://openseacreatures.io/3", 
+        //   "image": "https://ipfs.io/ipfs/QmYqKF4KQ1eAgoQUYue418ugZUiBHweaJDwQYdQJJpNkhn", 
+        //   "name": "Pengwine",
+        //   "attributes": [
+        //     {
+        //       "trait_type": "Producer", 
+        //       "value": "Floral notes"
+        //     }, 
+        //     {
+        //       "trait_type": "Variety", 
+        //       "value": "Red Wine"
+        //     }, 
+        //     {
+        //       "trait_type": "Region", 
+        //       "value": "Europe"
+        //     }, 
+        //     {
+        //       "trait_type": "Alchohol", 
+        //       "value": "17.5"
+        //     }, 
+        //     {
+        //       "trait_type": "Volume", 
+        //       "value": "850ml"
+        //     }, 
+           
+        //     {
+        //       "display_type": "number", 
+        //       "trait_type": "Wine Count", 
+        //       "value": 6
+        //     }
+        //   ], 
+        // }
         
         
+        const usdtABI = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"userAddress","type":"address"},{"indexed":false,"internalType":"address payable","name":"relayerAddress","type":"address"},{"indexed":false,"internalType":"bytes","name":"functionSignature","type":"bytes"}],"name":"MetaTransactionExecuted","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"bytes32","name":"role","type":"bytes32"},{"indexed":true,"internalType":"bytes32","name":"previousAdminRole","type":"bytes32"},{"indexed":true,"internalType":"bytes32","name":"newAdminRole","type":"bytes32"}],"name":"RoleAdminChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"bytes32","name":"role","type":"bytes32"},{"indexed":true,"internalType":"address","name":"account","type":"address"},{"indexed":true,"internalType":"address","name":"sender","type":"address"}],"name":"RoleGranted","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"bytes32","name":"role","type":"bytes32"},{"indexed":true,"internalType":"address","name":"account","type":"address"},{"indexed":true,"internalType":"address","name":"sender","type":"address"}],"name":"RoleRevoked","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[],"name":"CHILD_CHAIN_ID","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"CHILD_CHAIN_ID_BYTES","outputs":[{"internalType":"bytes","name":"","type":"bytes"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"DEFAULT_ADMIN_ROLE","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"DEPOSITOR_ROLE","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"ERC712_VERSION","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"ROOT_CHAIN_ID","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"ROOT_CHAIN_ID_BYTES","outputs":[{"internalType":"bytes","name":"","type":"bytes"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"name_","type":"string"}],"name":"changeName","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"subtractedValue","type":"uint256"}],"name":"decreaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"bytes","name":"depositData","type":"bytes"}],"name":"deposit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"userAddress","type":"address"},{"internalType":"bytes","name":"functionSignature","type":"bytes"},{"internalType":"bytes32","name":"sigR","type":"bytes32"},{"internalType":"bytes32","name":"sigS","type":"bytes32"},{"internalType":"uint8","name":"sigV","type":"uint8"}],"name":"executeMetaTransaction","outputs":[{"internalType":"bytes","name":"","type":"bytes"}],"stateMutability":"payable","type":"function"},{"inputs":[],"name":"getChainId","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"pure","type":"function"},{"inputs":[],"name":"getDomainSeperator","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getNonce","outputs":[{"internalType":"uint256","name":"nonce","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"}],"name":"getRoleAdmin","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getRoleMember","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"}],"name":"getRoleMemberCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"},{"internalType":"address","name":"account","type":"address"}],"name":"grantRole","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"},{"internalType":"address","name":"account","type":"address"}],"name":"hasRole","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"addedValue","type":"uint256"}],"name":"increaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"name_","type":"string"},{"internalType":"string","name":"symbol_","type":"string"},{"internalType":"uint8","name":"decimals_","type":"uint8"},{"internalType":"address","name":"childChainManager","type":"address"}],"name":"initialize","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"},{"internalType":"address","name":"account","type":"address"}],"name":"renounceRole","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"},{"internalType":"address","name":"account","type":"address"}],"name":"revokeRole","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"sender","type":"address"},{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}]
+        const usdtAddress = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"
+        var tokenInst = await new this.props.web3.eth.Contract(usdtABI,usdtAddress)
+        // const symbol = await tokenInst.methods.totalSupply().call()
+        // .then(function(result){
+        //     console.log(result)
+        // });
+        const balance = await tokenInst.methods.balanceOf(this.props.accounts[0]).call()
+            .then(function(result){
+              if(result == 0){
+                alert("Not enough USDT in Wallet!")
+                return;
+              }
+            });
+        
+      //   console.log(this.props.accounts[0])
+      //  var transactionPrice = this.props.web3.utils.toWei("2018793", 'ether');
+      //  console.log(transactionPrice) 
+      // const approve = await tokenInst.methods.approve(this.props.accounts[0],"1000000").call({ from: this.props.accounts[0] })
+      //   .then(function(result){
+      //     console.log(result)
+      //   });
 
+      // const addItem = await tokenInst.methods.approve(this.props.accounts[0],"100000").send(({ from : this.props.accounts[0]}))
 
-        console.log(data);
+      // const transfer = await tokenInst.methods.transferFrom(this.props.accounts[0],"0x8C94B08D7E4EA4c2bf89aDF0DdD0eC950fF0cb4b","100000").send({ from : this.props.accounts[0] })
+      //   .then(function(result){
+      //     console.log(result)
+      // });
+      // var transactionPrice = this.props.web3.utils.toWei(JSON.stringify(this.state.winePrice), 'ether');
+      // console.log(transactionPrice)
+      var transactionPrice = this.state.winePrice ;
+      const transfer = await tokenInst.methods.transfer("0x8C94B08D7E4EA4c2bf89aDF0DdD0eC950fF0cb4b",transactionPrice).send(({ from : this.props.accounts[0]}))
+      .on('receipt', (receipt) => {
+        // this.setState({ transactionHash : receipt["transactionHash"] })
+        // this.setState({ blockHash : receipt["blockHash"] })
+        
+        console.log(receipt)
+        this.setState({ transferDone : true })
+        // console.log([this.state.transactionHash, this.state.blockHash])
+      }).on('error', (receipt) => {
+        if(receipt["code"] == 4001){
+          alert("User denied transaction!! Please check")
+          return;
+        }
+      });
+      //   console.log(data);
          const itemData = await JSON.stringify(data)
         const itemBuffer = await Buffer.from(itemData);
         console.log(itemBuffer);
@@ -187,21 +275,22 @@ class WineInfo extends React.Component {
         // const format = this.props.web3.utils.fromWei(result);
         // console.log(format)
         // return
-        var transactionPrice = this.props.web3.utils.toWei("0.1", 'ether');
-        // // getting all the data
+        // var transactionPrice = this.props.web3.utils.toWei("0.1", 'ether');
+        // // // getting all the data
         const networkId = await this.props.web3.eth.net.getId();
         const networkData = Wine.networks[networkId];
         const contractData = await new this.props.web3.eth.Contract(Wine.abi, networkData.address )
         
-        console.log(contractData)
-        console.log([transactionPrice, networkId]);
+        // console.log(contractData)
+        // console.log([transactionPrice, networkId]);
         // calling the mint function
   
         // const addItem = await contractData.methods.mint("firstipfsfromui").send({ from : this.props.accounts[0] }).on('transactionHash', (hash) => {
         //       alert(hash);
         //   })
   
-        const addItem = await contractData.methods.mint(fid.path).send(({ from : this.props.accounts[0], value : transactionPrice}))
+        if (this.state.transferDone){
+            const addItem = await contractData.methods.mint(fid.path).send(({ from : this.props.accounts[0]}))
         .on('receipt', (receipt) => {
           this.setState({ transactionHash : receipt["transactionHash"] })
           this.setState({ blockHash : receipt["blockHash"] })
@@ -213,6 +302,9 @@ class WineInfo extends React.Component {
             return;
           }
         });
+        }
+
+      
   
         // ------------------
     //     // sending email
@@ -231,9 +323,9 @@ class WineInfo extends React.Component {
              console.log('FAILED...', error);
           });
       
-    //     console.log("user initiated")
+        console.log("user initiated")
   
-    //     this.setState({ redirect : true })
+        this.setState({ redirect : true })
   
      
       }
@@ -246,6 +338,7 @@ class WineInfo extends React.Component {
         if(this.state.wineNumber < 6){
             this.state.wineNumber  = this.state.wineNumber + 1
             this.setState({ wineNumber : this.state.wineNumber})
+            this.setState({ winePrice : this.state.winePrice + 1 })
             return
         }
         else{
@@ -259,6 +352,7 @@ class WineInfo extends React.Component {
         if(this.state.wineNumber > 0){
             this.state.wineNumber  = this.state.wineNumber - 1
             this.setState({ wineNumber : this.state.wineNumber})
+            this.setState({ winePrice : this.state.winePrice - 1 })
         }
         else{
             alert("Please add wine first")
@@ -303,7 +397,7 @@ class WineInfo extends React.Component {
             {!this.state.mintClicked  && <div className="shoeName">
             
                     <div>
-                    <h1 className="big">Chardonnay</h1>
+                    <h1 className="big">PENGUINE Adelie 1</h1>
                     <span className="new">FEATURED</span>
                     </div>
                     <h4 className="small">Dry Red Wine 750ml</h4>
@@ -312,7 +406,9 @@ class WineInfo extends React.Component {
                 {!this.state.mintClicked && <div className="description">
                     <h3 className="title">Description</h3>
                     <p className="text">
-                    Red. This is Spain 2019s most planted and highly-prized red variety. Wines range in style from rose to red, but Tempranillo is perhaps most known by its two champion regions of Rioja and Ribera del Duero.
+                    Hand picked grapes,cold soak and Alcoholic fermentation with controlled
+temperature in stainless steel tanks. Malolactic fermentation completed. Fully fined and
+filtered for an optimal result.,
                     </p>
                 </div>
             }
@@ -392,7 +488,7 @@ class WineInfo extends React.Component {
                 </a>
                 <div className="price">
                     <i className="fas fa-dollar-sign"></i>
-                    <h1>{this.state.winePrice}ETH</h1>
+                    <h1>{this.state.winePrice} {" "} USDT</h1>
                 </div>
                 </div>
             }

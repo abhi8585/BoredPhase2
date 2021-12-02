@@ -10,7 +10,9 @@ import ShowError from "./components/Info/error";
 // import Header  from './pages/header';
 // import ModelInformation from './pages/model-information';
 // import Collection from './pages/collection';
-import Web3 from "web3"
+import Web3 from "web3";
+import AwesomeSlider from 'react-awesome-slider';
+import 'react-awesome-slider/dist/styles.css';
 // import { createRaribleSdk, RaribleSdk } from "@rarible/protocol-ethereum-sdk"
 // import React from 'react'
 // import { Web3Ethereum } from "@rarible/web3-ethereum";
@@ -163,12 +165,15 @@ class App extends React.Component {
        else{
         return (
           <div>
-            <Particles options={particlesOptions}/>
-          <Header provider={this.state.provider} accounts={this.state.accounts} web3={this.state.web3} />
-        <div className="App">
+            {/* <Particles options={particlesOptions}/> */}
           
+          {/* <AwesomeSlider> */}
+        <div className="App">
+        <Header provider={this.state.provider} accounts={this.state.accounts} web3={this.state.web3} />
           <Home provider={this.state.provider} accounts={this.state.accounts} web3={this.state.web3} />
+          
         </div>
+        {/* </AwesomeSlider> */}
        {/* <Particles id="tsparticles" url="http://foo.bar/particles.json" init={this.particlesInit} loaded={this.particlesLoaded} /> */}
        </div>
         )
