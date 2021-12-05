@@ -411,9 +411,9 @@ class WineInfo extends React.Component {
                 </div>}
 
                 {!this.state.mintClicked && <div className="description">
-                    <h3 className="title">Hand picked grapes,cold soak and Alcoholic fermentation with controlled temperature in stainless steel tanks. Malolactic fermentation completed. Fully fined and filtered for an optimal result.</h3>
+                    <h3 className="title">Description</h3>
                     <p className="text">
-                    best red wine
+                    Hand picked grapes,cold soak and Alcoholic fermentation with controlled temperature in stainless steel tanks. Malolactic fermentation completed. Fully fined and filtered for an optimal result.
                     </p>
                 </div>
             }
