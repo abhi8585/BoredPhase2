@@ -72,6 +72,10 @@ contract Wine is ERC721, ERC721Enumerable {
         return ipfsDataHash;
     }
 
+    function getMintedImages() public view returns(string[] memory) {
+        return imageHashes;
+        }
+
     function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
         // require(_exists(tokenId), "ERC721Metadata: URI query for nonexistent token");
 
@@ -82,6 +86,3 @@ contract Wine is ERC721, ERC721Enumerable {
     }
   
 }
-
-// make an array so that we can fetch the object on UI part.
-// make a mapping to keep track of the ipfs hash
