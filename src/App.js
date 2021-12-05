@@ -175,10 +175,10 @@ class App extends React.Component {
   }
     render() {
       console.log(this.state.networkId)
-      if (this.state.networkId != 137 && this.state.networkId != 80001){
-        return(<ShowError message={"Please Switch to Polygon Network & Reload!"}/>)
-        return
-      }
+      // if (this.state.networkId != 137 && this.state.networkId != 80001){
+      //   return(<ShowError message={"Please Switch to Polygon Network & Reload!"}/>)
+      //   return
+      // }
       // if (networkId != 137 && networkId != 80001){
       //   alert("Please switch to Polygon Network!")
       //   return
