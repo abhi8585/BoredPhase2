@@ -56,6 +56,7 @@ class App extends React.Component {
     this.setNetworkId = this.setNetworkId.bind(this)
     this.getDataFromHash = this.getDataFromHash.bind(this)
     this.getHash = this.getHash.bind(this)
+ 
     this.state = {
 
       provider : null,
@@ -63,10 +64,11 @@ class App extends React.Component {
       sdk:null,
       web3:null,
       networkId:null,
-      wineData: null,
+      wineData: [],
       itemData : null
 
     }
+    
   }
 
   particlesInit(main){
@@ -87,7 +89,8 @@ class App extends React.Component {
     getDataFromHash(){
       fetch('https://ipfs.io/ipfs/QmTBdefEdEK8sM2dqCdogdrGRiL9kzfdpk1dhewQRha31k')
         .then(response => response.json())
-        .then(data => this.setState({ wineData : data}));
+        .then(data => this.setState({ wineData : data}))
+       
 
     }
 
@@ -96,12 +99,14 @@ class App extends React.Component {
       return itemData
     }
 
-    async componentWillMount() {
+    async componentDidMount() {
 
       // this.setState({ message: "This is an updated message" });
       console.log("Component is Mounting")
       this.useEffect()
-      this.getDataFromHash()
+      fetch('https://ipfs.io/ipfs/QmTBdefEdEK8sM2dqCdogdrGRiL9kzfdpk1dhewQRha31k')
+      .then(response => response.json())
+      .then(data => this.setState({ wineData : data}))
       // this.getItemData()
   
   }
@@ -109,6 +114,10 @@ class App extends React.Component {
   async setWeb3Obj(web3){
     await this.setState({ web3});
   }
+
+  // async setWineData(data){
+  //   this.setState({ wineData : data});
+  // }
 
     useEffect(){
 

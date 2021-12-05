@@ -73,7 +73,7 @@ class WineInfo extends React.Component {
 
 
     handleMintClick(){
-        
+        console.log(this.props.itemData)
     //    alert(true)
     if(this.state.wineNumber < 2){
         alert("You have to atleast Mint 2 Wine's ")
@@ -241,7 +241,7 @@ class WineInfo extends React.Component {
       //   console.log(data);
 
       
-         const itemData = await JSON.stringify(data)
+         const itemData = await JSON.stringify(this.props.itemData)
         const itemBuffer = await Buffer.from(itemData);
         console.log(itemBuffer);
         const fid = await ipfs.add(itemBuffer);
@@ -294,8 +294,7 @@ class WineInfo extends React.Component {
         //       alert(hash);
         //   })
   
-        if (this.state.transferDone){
-            const addItem = await contractData.methods.mint(fid.path).send(({ from : this.props.accounts[0]}))
+        const addItem = await contractData.methods.mint(fid.path,this.props.itemData["image"]).send(({ from : this.props.accounts[0]}))
         .on('receipt', (receipt) => {
           this.setState({ transactionHash : receipt["transactionHash"] })
           this.setState({ blockHash : receipt["blockHash"] })
@@ -307,7 +306,6 @@ class WineInfo extends React.Component {
             return;
           }
         });
-        }
 
       
   
@@ -406,16 +404,16 @@ class WineInfo extends React.Component {
             {!this.state.mintClicked  && <div className="shoeName">
             
                     <div>
-                    <h1 className="big">{this.props.itemData.name}</h1>
+                    <h1 className="big">wine1</h1>
                     <span className="new">FEATURED</span>
                     </div>
-                    <h4 className="small">{"Edition"+" "+this.props.itemData.edition}</h4>
+                    <h4 className="small">{"Edition"+" "+1}</h4>
                 </div>}
 
                 {!this.state.mintClicked && <div className="description">
                     <h3 className="title">Description</h3>
                     <p className="text">
-                    {this.props.itemData.description}
+                    best red wine
                     </p>
                 </div>
             }
