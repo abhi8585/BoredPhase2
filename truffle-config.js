@@ -24,8 +24,7 @@
  // const mnemonic = fs.readFileSync(".secret").toString().trim();
  
  const private_keys = [
-   '5c4e5befe81daad7e848d6f43789a6f3caeb2f60e3a54f241b9694bf60bea020',
-   '935f3448873980925d1fcaf3a3f5ba28d3ce623a5095b82a4049053a36a4fc5c'
+   
  ]
  
  module.exports = {
