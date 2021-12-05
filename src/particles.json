@@ -4,7 +4,7 @@
       "value": "#ffffff"
     }
   },
-  "fpsLimit": 60,
+  "fpsLimit": 20,
   "interactivity": {
     "events": {
       "onClick": {
@@ -19,10 +19,10 @@
     },
     "modes": {
       "bubble": {
-        "distance": 400,
+        "distance": 50,
         "duration": 2,
         "opacity": 0.8,
-        "size": 40
+        "size": 1
       },
       "push": {
         "quantity": 4
@@ -58,7 +58,7 @@
     "number": {
       "density": {
         "enable": true,
-        "value_area": 500
+        "value_area": 300
       },
       "value": 80
     },

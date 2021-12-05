@@ -11,7 +11,7 @@ class WineInfo extends React.Component {
 
     constructor(props){
         super(props)
-     
+        console.log(this.props.data)
         this.handleMintClick = this.handleMintClick.bind(this)
         this.lazyMint = this.lazyMint.bind(this)
         this.handleAddressChange = this.handleAddressChange.bind(this)
@@ -22,6 +22,7 @@ class WineInfo extends React.Component {
         this.containerStyles = this.containerStyles.bind(this)
         this.addWineNumber = this.addWineNumber.bind(this)
         this.subWineNumber = this.subWineNumber.bind(this)
+        this.handleTransferClick = this.handleTransferClick.bind(this)
         this.state = {
             mintClicked : false,
             wineNumber : 1,
@@ -33,7 +34,9 @@ class WineInfo extends React.Component {
             blockHash:"",
             ageCheck:"",
             winePrice : 1,
-            transferDone : false
+            transferDone : false,
+            transferClicked : false,
+            details : false
         }
         // this.containerStyles = {
         //     height: 20,
@@ -78,6 +81,7 @@ class WineInfo extends React.Component {
         return
     }
     this.setState({ mintClicked : true})
+    this.setState({ transferClicked : true})
     }
 
     async lazyMint(e){
@@ -196,13 +200,13 @@ class WineInfo extends React.Component {
         // .then(function(result){
         //     console.log(result)
         // });
-        const balance = await tokenInst.methods.balanceOf(this.props.accounts[0]).call()
-            .then(function(result){
-              if(result == 0){
-                alert("Not enough USDT in Wallet!")
-                return;
-              }
-            });
+        // const balance = await tokenInst.methods.balanceOf(this.props.accounts[0]).call()
+        //     .then(function(result){
+        //       if(result == 0){
+        //         alert("Not enough USDT in Wallet!")
+        //         return;
+        //       }
+        //     });
         
       //   console.log(this.props.accounts[0])
       //  var transactionPrice = this.props.web3.utils.toWei("2018793", 'ether');
@@ -220,22 +224,24 @@ class WineInfo extends React.Component {
       // });
       // var transactionPrice = this.props.web3.utils.toWei(JSON.stringify(this.state.winePrice), 'ether');
       // console.log(transactionPrice)
-      var transactionPrice = this.state.winePrice ;
-      const transfer = await tokenInst.methods.transfer("0x8C94B08D7E4EA4c2bf89aDF0DdD0eC950fF0cb4b",transactionPrice).send(({ from : this.props.accounts[0]}))
-      .on('receipt', (receipt) => {
-        // this.setState({ transactionHash : receipt["transactionHash"] })
-        // this.setState({ blockHash : receipt["blockHash"] })
+      // var transactionPrice = this.state.winePrice ;
+      // const transfer = await tokenInst.methods.transfer("0x8C94B08D7E4EA4c2bf89aDF0DdD0eC950fF0cb4b",transactionPrice).send(({ from : this.props.accounts[0]}))
+      // .on('receipt', (receipt) => {
+      //   // this.setState({ transactionHash : receipt["transactionHash"] })
+      //   // this.setState({ blockHash : receipt["blockHash"] })
         
-        console.log(receipt)
-        this.setState({ transferDone : true })
-        // console.log([this.state.transactionHash, this.state.blockHash])
-      }).on('error', (receipt) => {
-        if(receipt["code"] == 4001){
-          alert("User denied transaction!! Please check")
-          return;
-        }
-      });
+      //   console.log(receipt)
+      //   this.setState({ transferDone : true })
+      //   // console.log([this.state.transactionHash, this.state.blockHash])
+      // }).on('error', (receipt) => {
+      //   if(receipt["code"] == 4001){
+      //     alert("User denied transaction!! Please check")
+      //     return;
+      //   }
+      // });
       //   console.log(data);
+
+      
          const itemData = await JSON.stringify(data)
         const itemBuffer = await Buffer.from(itemData);
         console.log(itemBuffer);
@@ -361,6 +367,10 @@ class WineInfo extends React.Component {
      
     }
 
+    handleTransferClick(){
+      this.setState({ details : true})
+    }
+
     handleNameChange(event) {
         console.log(event.target.value)
         this.setState({ userName: event.target.value});  
@@ -437,7 +447,7 @@ filtered for an optimal result.,
             }
           
 
-        {this.state.mintClicked  && <div className="shoeName">
+        {this.state.mintClicked && !this.state.details && <div className="shoeName">
                     
             <div>
             {/* <h1 className="big">Please Enter Shipping Details</h1> */}
@@ -451,17 +461,17 @@ filtered for an optimal result.,
         }
          */}
                {
-                   this.state.mintClicked && <div className="sign__group">
+                   this.state.mintClicked && !this.state.details && <div className="sign__group">
                    <input onChange={this.handleNameChange} type="text" name="name" className="sign__input" placeholder="Name" />
                  </div>
                }
               {
-                  this.state.mintClicked && <div className="sign__group">
+                  this.state.mintClicked && !this.state.details && <div className="sign__group">
                   <input onChange={this.handleEmailChange} type="text" name="email" className="sign__input" placeholder="Email" />
                 </div>
               }
                {
-                   this.state.mintClicked &&  <div className="sign__group">
+                   this.state.mintClicked && !this.state.details && <div className="sign__group">
                    <textarea onChange={this.handleAddressChange}
                      name="text"
                      className="sign__textarea"
@@ -472,10 +482,12 @@ filtered for an optimal result.,
                  <ul className="filter__checkboxes">
                  <li>
                    <input onChange = {this.handleCheckBox} id="type5" type="checkbox" name="type5" />
-                   <label htmlFor="type5">Yes I am 18+, Allow me to drink🍷</label>
+                   <label htmlFor="type5">I confirm I am 18 years of age or older</label>
                  </li>
                  </ul>
+                 
                  </div>
+                 
               
  
                </div>
@@ -494,12 +506,12 @@ filtered for an optimal result.,
             }
 
 {
-            this.state.mintClicked && <div className="buy-price">
+            this.state.mintClicked && !this.state.details && <div className="buy-price">
                 <a href="/#" className="buy" onClick={this.handleBack}>
                     <i className="fas fa-shopping-cart"></i>Back
                 </a>
-                <a href="/#" className="buy" onClick={this.lazyMint}>
-                    <i className="fas fa-shopping-cart"></i>Mint
+                <a href="/#" className="buy" onClick={this.handleTransferClick}>
+                    <i className="fas fa-shopping-cart"></i>Transfer
                 </a>
                 {/* <div className="price">
                     <i className="fas fa-dollar-sign"></i>
@@ -507,6 +519,53 @@ filtered for an optimal result.,
                 </div> */}
                 </div>
             }
+
+  {this.state.details && <div className="shoeName">
+              
+              <div>
+              <h1 className="big">Amount Paid</h1>
+              <span className="new">Congratulations</span>
+              </div>
+              <h4 className="small">Welcome to BoredWineClub</h4>
+          </div>}
+
+
+    {this.state.details &&<div className="description">
+                        {/* <h3 className="title">Congratulations</h3> */}
+                        <h2 className="text">
+                       You have successfully paid for the Wine. You are now able to Mint
+                       your Wine NFT. You just have to pay the gas fees now.
+                        </h2>
+                    </div>
+                }
+
+{this.state.details &&<div className="description">
+                        <h3 className="title">Transaction hash</h3>
+                        <h2 className="text">
+                        0xc2132d05d31c914a87c6611c10748aeb04b58e8f
+                        </h2>
+                    </div>
+                }
+
+{this.state.details &&<div className="description">
+                        <h3 className="title">Block hash</h3>
+                        <h2 className="text">
+                        0xc2132d05d31c914a87c6611c10748aeb04b58e8f
+                        </h2>
+                    </div>
+                }
+
+{
+            this.state.details && <div className="buy-price">
+                <a href="/#" className="buy" onClick={this.lazyMint}>
+                    <i className="fas fa-shopping-cart"></i>Mint
+                </a>
+
+                </div>
+            }
+
+
+
 
 
                

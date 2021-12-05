@@ -27,7 +27,8 @@ import Particles from "react-tsparticles";
 // import logo from './logo.svg';
 // import './App.css';
 import particlesOptions from "./particles.json";
-
+import ipfs from "./components/Info/ipfs";
+import Particle from "./pages/particle";
 
 
 import "./App.scss";
@@ -53,13 +54,16 @@ class App extends React.Component {
     this.particlesInit = this.particlesInit.bind(this)
     this.particlesLoaded = this.particlesLoaded.bind(this)
     this.setNetworkId = this.setNetworkId.bind(this)
+    this.getDataFromHash = this.getDataFromHash.bind(this)
+    this.getHash = this.getHash.bind(this)
     this.state = {
 
       provider : null,
       accounts : [],
       sdk:null,
       web3:null,
-      networkId:null
+      networkId:null,
+      wineData: null,
 
     }
   }
@@ -74,11 +78,24 @@ class App extends React.Component {
     console.log(container);
   };
 
-    componentWillMount() {
+  
+    getHash(){
+
+    }
+
+    getDataFromHash(){
+      fetch('https://ipfs.io/ipfs/QmTBdefEdEK8sM2dqCdogdrGRiL9kzfdpk1dhewQRha31k')
+        .then(response => response.json())
+        .then(data => this.setState({ wineData : data}));
+
+    }
+
+    async componentWillMount() {
 
       // this.setState({ message: "This is an updated message" });
       console.log("Component is Mounting")
       this.useEffect()
+      this.getDataFromHash()
   
   }
 
@@ -166,11 +183,13 @@ class App extends React.Component {
         return (
           <div>
             {/* <Particles options={particlesOptions}/> */}
-          
+          <Particle />
           {/* <AwesomeSlider> */}
         <div className="App">
         <Header provider={this.state.provider} accounts={this.state.accounts} web3={this.state.web3} />
-          <Home provider={this.state.provider} accounts={this.state.accounts} web3={this.state.web3} />
+          <Home provider={this.state.provider} accounts={this.state.accounts} web3={this.state.web3}
+          data={this.state.wineData}
+          />
           
         </div>
         {/* </AwesomeSlider> */}

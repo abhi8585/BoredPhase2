@@ -67,7 +67,7 @@ const Home = props => {
         
       // }
       shoeBackground = document.querySelector(".shoeBackground");
-      shoeBackground.style.height = `360px`;
+      shoeBackground.style.height = `415px`;
     } else if (!!shoeBackground) {
       // go back to default
       shoeBackground.style.height = "475px";
@@ -103,7 +103,7 @@ const Home = props => {
             <ProductImages />
           </div>
           {/* <Info /> */}
-          <WineInfo provider={props.provider} accounts={props.accounts} web3={props.web3} />
+          <WineInfo provider={props.provider} accounts={props.accounts} web3={props.web3} data={props.data} />
           {/* <ShowError /> */}
         </div>
       </div>
