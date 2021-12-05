@@ -74,6 +74,10 @@ const Home = props => {
     }
   };
 
+    function getItemData(){
+      return  props.data[Math.floor(Math.random() * props.data.length)];
+    }  
+
   useEffect(() => {
     sizes = document.querySelectorAll(".size");
     colors = document.querySelectorAll(".color");
@@ -100,10 +104,10 @@ const Home = props => {
               <i className="fas fa-share-alt"></i>
             </a> */}
 
-            <ProductImages />
+            <ProductImages itemData={getItemData()} />
           </div>
           {/* <Info /> */}
-          <WineInfo provider={props.provider} accounts={props.accounts} web3={props.web3} data={props.data} />
+          <WineInfo provider={props.provider} accounts={props.accounts} web3={props.web3} data={props.data} itemData={getItemData()}/>
           {/* <ShowError /> */}
         </div>
       </div>

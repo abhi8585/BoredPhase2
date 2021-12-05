@@ -11,7 +11,6 @@ class WineInfo extends React.Component {
 
     constructor(props){
         super(props)
-        console.log(this.props.data)
         this.handleMintClick = this.handleMintClick.bind(this)
         this.lazyMint = this.lazyMint.bind(this)
         this.handleAddressChange = this.handleAddressChange.bind(this)
@@ -36,7 +35,8 @@ class WineInfo extends React.Component {
             winePrice : 1,
             transferDone : false,
             transferClicked : false,
-            details : false
+            details : false,
+            itemData : ""
         }
         // this.containerStyles = {
         //     height: 20,
@@ -71,7 +71,6 @@ class WineInfo extends React.Component {
         })
     }
 
-    
 
     handleMintClick(){
         
@@ -407,18 +406,16 @@ class WineInfo extends React.Component {
             {!this.state.mintClicked  && <div className="shoeName">
             
                     <div>
-                    <h1 className="big">PENGUINE Adelie 1</h1>
+                    <h1 className="big">{this.props.itemData.name}</h1>
                     <span className="new">FEATURED</span>
                     </div>
-                    <h4 className="small">Dry Red Wine 750ml</h4>
+                    <h4 className="small">{"Edition"+" "+this.props.itemData.edition}</h4>
                 </div>}
 
                 {!this.state.mintClicked && <div className="description">
                     <h3 className="title">Description</h3>
                     <p className="text">
-                    Hand picked grapes,cold soak and Alcoholic fermentation with controlled
-temperature in stainless steel tanks. Malolactic fermentation completed. Fully fined and
-filtered for an optimal result.,
+                    {this.props.itemData.description}
                     </p>
                 </div>
             }

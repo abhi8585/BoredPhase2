@@ -64,6 +64,7 @@ class App extends React.Component {
       web3:null,
       networkId:null,
       wineData: null,
+      itemData : null
 
     }
   }
@@ -90,12 +91,18 @@ class App extends React.Component {
 
     }
 
+    getItemData(){
+      var itemData = this.state.wineData[Math.floor(Math.random() * this.state.wineData.length)]
+      return itemData
+    }
+
     async componentWillMount() {
 
       // this.setState({ message: "This is an updated message" });
       console.log("Component is Mounting")
       this.useEffect()
       this.getDataFromHash()
+      // this.getItemData()
   
   }
 
@@ -188,7 +195,7 @@ class App extends React.Component {
         <div className="App">
         <Header provider={this.state.provider} accounts={this.state.accounts} web3={this.state.web3} />
           <Home provider={this.state.provider} accounts={this.state.accounts} web3={this.state.web3}
-          data={this.state.wineData}
+          data={this.state.wineData} 
           />
           
         </div>
