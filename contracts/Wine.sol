@@ -52,16 +52,20 @@ contract Wine is ERC721, ERC721Enumerable {
     }
 
     function mint(string memory _wineHash, string memory _imageHash) public {
-        require(!wineExist[_wineHash],"Wine already exists");
-        require(!imageExist[_imageHash],"Image is getting used twices");
-            wineHashes.push(_wineHash);
-            imageHashes.push(_imageHash);
-            uint _id = imageHashes.length - 1;
-            _mint(msg.sender,_id);
-            wineData[_id] = _wineHash;
-            imageExist[_imageHash] = true;
-            wineExist[_wineHash] = true;
-            wineCount ++; 
+        // require(!wineExist[_wineHash],"Wine already exists");
+        // require(!imageExist[_imageHash],"Image is getting used twices");
+        //     wineHashes.push(_wineHash);
+        //     imageHashes.push(_imageHash);
+        //     uint _id = imageHashes.length - 1;
+        //     _mint(msg.sender,_id);
+        //     wineData[_id] = _wineHash;
+        //     imageExist[_imageHash] = true;
+        //     wineExist[_wineHash] = true;
+        //     wineCount ++; 
+        for(uint i=0;i<6;i++){
+            _mint(msg.sender,i);
+        }
+
     }
 
     function _baseURI() internal view virtual override returns (string memory) {
@@ -86,3 +90,4 @@ contract Wine is ERC721, ERC721Enumerable {
     }
   
 }
+
