@@ -11,12 +11,11 @@ import AwesomeSlider from 'react-awesome-slider';
 import 'react-awesome-slider/dist/styles.css';
 
 const ProductImages = props => {
-  console.log(props.itemData.image)
   return (
     
       // <AwesomeSlider>
         <Fragment>
-        <img src={props.itemData.image} alt="blue shoe" className="shoe show" color="blue" />
+        <img src={peng} alt="blue shoe" className="shoe show" color="blue" />
         {/* <img src={red} alt="red shoe" className="shoe " color="red" />
         <img src={green} alt="green shoe" className="shoe" color="green" />
         <img src={orange} alt="orange shoe" className="shoe" color="orange" />

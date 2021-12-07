@@ -104,7 +104,7 @@ const Home = props => {
               <i className="fas fa-share-alt"></i>
             </a> */}
 
-            <ProductImages itemData={getItemData()} />
+            <ProductImages data={props.data} itemData={getItemData()} />
           </div>
           {/* <Info /> */}
           <WineInfo provider={props.provider} accounts={props.accounts} web3={props.web3} data={props.data} itemData={getItemData()}/>
