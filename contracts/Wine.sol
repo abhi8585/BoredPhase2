@@ -29,6 +29,7 @@ contract Wine is ERC721, ERC721Enumerable {
     string[] public wineHashes;
     string[] public imageHashes;
 
+    event WineHash(string[] wineHash); 
 
     string public ipfsDataHash = "QmZ18Sy3avcXyje2Q7X4R86XD6oCR2Tj85XU7fSqTCgZBh";
 
@@ -51,7 +52,24 @@ contract Wine is ERC721, ERC721Enumerable {
         return super.supportsInterface(interfaceId);
     }
 
-    function mint(string memory _wineHash, string memory _imageHash) public {
+    function getMintedImages(string[] calldata _wineHash, string[] calldata _imageHash, uint wineAmount) public returns(string[] memory) {
+            for(uint i=0;i<wineAmount;i++){
+                require(!wineExist[_wineHash[i]],"Wine already exists");
+                require(!imageExist[_imageHash[i]],"Image is getting used twices");
+                wineHashes.push(_wineHash[i]);
+                imageHashes.push(_imageHash[i]);
+                uint _id = imageHashes.length - 1;
+                // _mint(msg.sender,_id);
+                wineData[_id] = _wineHash[i];
+                imageExist[_imageHash[i]] = true;
+                wineExist[_wineHash[i]] = true;
+            }
+        return wineHashes;
+        }
+
+
+    function mint(string[] calldata _wineHash, string[] calldata _imageHash, uint wineAmount) public {
+        // WineHash(_wineHash);
         // require(!wineExist[_wineHash],"Wine already exists");
         // require(!imageExist[_imageHash],"Image is getting used twices");
         //     wineHashes.push(_wineHash);
@@ -62,8 +80,16 @@ contract Wine is ERC721, ERC721Enumerable {
         //     imageExist[_imageHash] = true;
         //     wineExist[_wineHash] = true;
         //     wineCount ++; 
-        for(uint i=0;i<6;i++){
-            _mint(msg.sender,i);
+        for(uint i=0;i<wineAmount;i++){
+            require(!wineExist[_wineHash[i]],"Wine already exists");
+            require(!imageExist[_imageHash[i]],"Image is getting used twices");
+            wineHashes.push(_wineHash[i]);
+            imageHashes.push(_imageHash[i]);
+            uint _id = imageHashes.length - 1;
+            _mint(msg.sender,_id);
+            wineData[_id] = _wineHash[i];
+            imageExist[_imageHash[i]] = true;
+            wineExist[_wineHash[i]] = true;
         }
 
     }
