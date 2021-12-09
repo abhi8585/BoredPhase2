@@ -38,6 +38,9 @@ class WineInfo extends React.Component {
             details : false,
             itemData : "",
             existingImages : "",
+            usdtTransactionHash : "",
+            usdtBlockHash : "",
+            mint : false
         }
         // this.containerStyles = {
         //     height: 20,
@@ -85,7 +88,9 @@ class WineInfo extends React.Component {
     }
 
     async lazyMint(e){
-        console.log(this.state.wineNumber)
+        
+        this.setState({ mint : true});
+        return
         // var existingImages = []
         // var wineMintData = []
         // const networkId = await this.props.web3.eth.net.getId();
@@ -135,17 +140,17 @@ class WineInfo extends React.Component {
         // }
         var wineIpfsHashes = [];
         var imageIpfsHashes = [];
-        for (var i=0;i<this.state.wineNumber;i++){
-          var tempWineItem = this.props.data[Math.floor(Math.random() * this.props.data.length)];
-          var tempImageItem = tempWineItem["image"].split("/")[4]
-          const itemData = await JSON.stringify(tempWineItem)
-          const itemBuffer = await Buffer.from(itemData);
-          // console.log(itemBuffer);
-          const fid = await ipfs.add(itemBuffer);
-          wineIpfsHashes.push(fid.path)
-          imageIpfsHashes.push(tempImageItem);
+        // for (var i=0;i<this.state.wineNumber;i++){
+        //   var tempWineItem = this.props.data[Math.floor(Math.random() * this.props.data.length)];
+        //   var tempImageItem = tempWineItem["image"].split("/")[4]
+        //   const itemData = await JSON.stringify(tempWineItem)
+        //   const itemBuffer = await Buffer.from(itemData);
+        //   // console.log(itemBuffer);
+        //   const fid = await ipfs.add(itemBuffer);
+        //   wineIpfsHashes.push(fid.path)
+        //   imageIpfsHashes.push(tempImageItem);
 
-        }
+        // }
      
         // e.preventDefault();
         // var data = {
@@ -233,9 +238,8 @@ class WineInfo extends React.Component {
         // }
         
         
-        const usdtABI = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"userAddress","type":"address"},{"indexed":false,"internalType":"address payable","name":"relayerAddress","type":"address"},{"indexed":false,"internalType":"bytes","name":"functionSignature","type":"bytes"}],"name":"MetaTransactionExecuted","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"bytes32","name":"role","type":"bytes32"},{"indexed":true,"internalType":"bytes32","name":"previousAdminRole","type":"bytes32"},{"indexed":true,"internalType":"bytes32","name":"newAdminRole","type":"bytes32"}],"name":"RoleAdminChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"bytes32","name":"role","type":"bytes32"},{"indexed":true,"internalType":"address","name":"account","type":"address"},{"indexed":true,"internalType":"address","name":"sender","type":"address"}],"name":"RoleGranted","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"bytes32","name":"role","type":"bytes32"},{"indexed":true,"internalType":"address","name":"account","type":"address"},{"indexed":true,"internalType":"address","name":"sender","type":"address"}],"name":"RoleRevoked","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[],"name":"CHILD_CHAIN_ID","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"CHILD_CHAIN_ID_BYTES","outputs":[{"internalType":"bytes","name":"","type":"bytes"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"DEFAULT_ADMIN_ROLE","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"DEPOSITOR_ROLE","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"ERC712_VERSION","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"ROOT_CHAIN_ID","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"ROOT_CHAIN_ID_BYTES","outputs":[{"internalType":"bytes","name":"","type":"bytes"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"name_","type":"string"}],"name":"changeName","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"subtractedValue","type":"uint256"}],"name":"decreaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"bytes","name":"depositData","type":"bytes"}],"name":"deposit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"userAddress","type":"address"},{"internalType":"bytes","name":"functionSignature","type":"bytes"},{"internalType":"bytes32","name":"sigR","type":"bytes32"},{"internalType":"bytes32","name":"sigS","type":"bytes32"},{"internalType":"uint8","name":"sigV","type":"uint8"}],"name":"executeMetaTransaction","outputs":[{"internalType":"bytes","name":"","type":"bytes"}],"stateMutability":"payable","type":"function"},{"inputs":[],"name":"getChainId","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"pure","type":"function"},{"inputs":[],"name":"getDomainSeperator","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getNonce","outputs":[{"internalType":"uint256","name":"nonce","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"}],"name":"getRoleAdmin","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getRoleMember","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"}],"name":"getRoleMemberCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"},{"internalType":"address","name":"account","type":"address"}],"name":"grantRole","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"},{"internalType":"address","name":"account","type":"address"}],"name":"hasRole","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"addedValue","type":"uint256"}],"name":"increaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"name_","type":"string"},{"internalType":"string","name":"symbol_","type":"string"},{"internalType":"uint8","name":"decimals_","type":"uint8"},{"internalType":"address","name":"childChainManager","type":"address"}],"name":"initialize","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"},{"internalType":"address","name":"account","type":"address"}],"name":"renounceRole","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"},{"internalType":"address","name":"account","type":"address"}],"name":"revokeRole","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"sender","type":"address"},{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}]
-        const usdtAddress = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"
-        var tokenInst = await new this.props.web3.eth.Contract(usdtABI,usdtAddress)
+        
+        // const transfer = await tokenInst.methods.transfer("0x027232Ed0657C7b4a041C6Bb345D24C9C7a65FD3","100000").send(({ from : this.props.accounts[0]}))
         // const symbol = await tokenInst.methods.totalSupply().call()
         // .then(function(result){
         //     console.log(result)
@@ -265,20 +269,7 @@ class WineInfo extends React.Component {
       // var transactionPrice = this.props.web3.utils.toWei(JSON.stringify(this.state.winePrice), 'ether');
       // console.log(transactionPrice)
       // var transactionPrice = this.state.winePrice ;
-      // const transfer = await tokenInst.methods.transfer("0x8C94B08D7E4EA4c2bf89aDF0DdD0eC950fF0cb4b",transactionPrice).send(({ from : this.props.accounts[0]}))
-      // .on('receipt', (receipt) => {
-      //   // this.setState({ transactionHash : receipt["transactionHash"] })
-      //   // this.setState({ blockHash : receipt["blockHash"] })
-        
-      //   console.log(receipt)
-      //   this.setState({ transferDone : true })
-      //   // console.log([this.state.transactionHash, this.state.blockHash])
-      // }).on('error', (receipt) => {
-      //   if(receipt["code"] == 4001){
-      //     alert("User denied transaction!! Please check")
-      //     return;
-      //   }
-      // });
+      
       //   console.log(data);
 
       
@@ -405,8 +396,30 @@ class WineInfo extends React.Component {
      
     }
 
-    handleTransferClick(){
-      this.setState({ details : true})
+    async handleTransferClick(){
+      
+      const usdtABI = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"userAddress","type":"address"},{"indexed":false,"internalType":"address payable","name":"relayerAddress","type":"address"},{"indexed":false,"internalType":"bytes","name":"functionSignature","type":"bytes"}],"name":"MetaTransactionExecuted","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"bytes32","name":"role","type":"bytes32"},{"indexed":true,"internalType":"bytes32","name":"previousAdminRole","type":"bytes32"},{"indexed":true,"internalType":"bytes32","name":"newAdminRole","type":"bytes32"}],"name":"RoleAdminChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"bytes32","name":"role","type":"bytes32"},{"indexed":true,"internalType":"address","name":"account","type":"address"},{"indexed":true,"internalType":"address","name":"sender","type":"address"}],"name":"RoleGranted","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"bytes32","name":"role","type":"bytes32"},{"indexed":true,"internalType":"address","name":"account","type":"address"},{"indexed":true,"internalType":"address","name":"sender","type":"address"}],"name":"RoleRevoked","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[],"name":"CHILD_CHAIN_ID","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"CHILD_CHAIN_ID_BYTES","outputs":[{"internalType":"bytes","name":"","type":"bytes"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"DEFAULT_ADMIN_ROLE","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"DEPOSITOR_ROLE","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"ERC712_VERSION","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"ROOT_CHAIN_ID","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"ROOT_CHAIN_ID_BYTES","outputs":[{"internalType":"bytes","name":"","type":"bytes"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"name_","type":"string"}],"name":"changeName","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"subtractedValue","type":"uint256"}],"name":"decreaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"bytes","name":"depositData","type":"bytes"}],"name":"deposit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"userAddress","type":"address"},{"internalType":"bytes","name":"functionSignature","type":"bytes"},{"internalType":"bytes32","name":"sigR","type":"bytes32"},{"internalType":"bytes32","name":"sigS","type":"bytes32"},{"internalType":"uint8","name":"sigV","type":"uint8"}],"name":"executeMetaTransaction","outputs":[{"internalType":"bytes","name":"","type":"bytes"}],"stateMutability":"payable","type":"function"},{"inputs":[],"name":"getChainId","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"pure","type":"function"},{"inputs":[],"name":"getDomainSeperator","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getNonce","outputs":[{"internalType":"uint256","name":"nonce","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"}],"name":"getRoleAdmin","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getRoleMember","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"}],"name":"getRoleMemberCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"},{"internalType":"address","name":"account","type":"address"}],"name":"grantRole","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"},{"internalType":"address","name":"account","type":"address"}],"name":"hasRole","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"addedValue","type":"uint256"}],"name":"increaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"name_","type":"string"},{"internalType":"string","name":"symbol_","type":"string"},{"internalType":"uint8","name":"decimals_","type":"uint8"},{"internalType":"address","name":"childChainManager","type":"address"}],"name":"initialize","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"},{"internalType":"address","name":"account","type":"address"}],"name":"renounceRole","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"},{"internalType":"address","name":"account","type":"address"}],"name":"revokeRole","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"sender","type":"address"},{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}]
+      const usdtAddress = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"
+      var tokenInst = await new this.props.web3.eth.Contract(usdtABI,usdtAddress)
+      const transfer = await tokenInst.methods.transfer("0x027232Ed0657C7b4a041C6Bb345D24C9C7a65FD3","1").send(({ from : this.props.accounts[0]}))
+      .on('receipt', (receipt) => {
+        // this.setState({ transactionHash : receipt["transactionHash"] })
+        // this.setState({ blockHash : receipt["blockHash"] })
+        
+        console.log(receipt)
+        // this.setState({ transferDone : true })
+        this.setState({ details : true})
+        this.setState({ usdtTransactionHash : receipt["transactionHash"] })
+        this.setState({ usdtBlockHash : receipt["blockHash"]})
+        // console.log([this.state.transactionHash, this.state.blockHash])
+      }).on('error', (receipt) => {
+        if(receipt["code"] == 4001){
+          console.log(receipt)
+          alert("User denied transaction!! Please check")
+          return;
+        }
+      });
+      
     }
 
     handleNameChange(event) {
@@ -556,7 +569,7 @@ class WineInfo extends React.Component {
                 </div>
             }
 
-  {this.state.details && <div className="shoeName">
+  {this.state.details && !this.state.mint && <div className="shoeName">
               
               <div>
               <h1 className="big">Amount Paid</h1>
@@ -566,7 +579,7 @@ class WineInfo extends React.Component {
           </div>}
 
 
-    {this.state.details &&<div className="description">
+    {this.state.details && !this.state.mint &&<div className="description">
                         {/* <h3 className="title">Congratulations</h3> */}
                         <h2 className="text">
                        You have successfully paid for the Wine. You are now able to Mint
@@ -575,30 +588,80 @@ class WineInfo extends React.Component {
                     </div>
                 }
 
-{this.state.details &&<div className="description">
-                        <h3 className="title">Transaction hash</h3>
+{this.state.details && !this.state.mint &&<div className="description">
+                        <h3 className="title">Transfer Transaction hash</h3>
                         <h2 className="text">
-                        0xc2132d05d31c914a87c6611c10748aeb04b58e8f
+                        {this.state.usdtTransactionHash}
                         </h2>
                     </div>
                 }
 
-{this.state.details &&<div className="description">
-                        <h3 className="title">Block hash</h3>
+{this.state.details && !this.state.mint&&<div className="description">
+                        <h3 className="title">Transfer Block hash</h3>
                         <h2 className="text">
-                        0xc2132d05d31c914a87c6611c10748aeb04b58e8f
+                        {this.state.usdtBlockHash}
                         </h2>
                     </div>
                 }
 
 {
-            this.state.details && <div className="buy-price">
+            this.state.details && !this.state.mint && <div className="buy-price">
                 <a href="/#" className="buy" onClick={this.lazyMint}>
                     <i className="fas fa-shopping-cart"></i>Mint
                 </a>
 
                 </div>
             }
+
+{this.state.mint && <div className="shoeName">
+              
+              <div>
+              <h1 className="big">Wine Minted</h1>
+              <span className="new">Congratulations</span>
+              </div>
+              <h4 className="small">Welcome to BoredWineClub</h4>
+          </div>}
+
+          {this.state.mint &&<div className="description">
+                        {/* <h3 className="title">Congratulations</h3> */}
+                        <h2 className="text">
+                       You have successfully minted your Wines. Welcome to the BoredWineClub.
+                       Enjoy your wine .You can see them at Opensea.Below are the summarized order details.
+                        </h2>
+                    </div>
+                }
+
+{this.state.mint &&<div className="description">
+                        <h3 className="title">USDT Transaction hash</h3>
+                        <h2 className="text">
+                        0xc2132d05d31c914a87c6611c10748aeb04b58e8f
+                        </h2>
+                    </div>
+                }
+
+{this.state.mint&&<div className="description">
+                        <h3 className="title">USDT Block hash</h3>
+                        <h2 className="text">
+                        0xc2132d05d31c914a87c6611c10748aeb04b58e8f
+                        </h2>
+                    </div>
+                }
+    
+    {this.state.mint &&<div className="description">
+                        <h3 className="title">Mint Transaction hash</h3>
+                        <h2 className="text">
+                        0xc2132d05d31c914a87c6611c10748aeb04b58e8f
+                        </h2>
+                    </div>
+                }
+
+{this.state.mint&&<div className="description">
+                        <h3 className="title">Mint Block hash</h3>
+                        <h2 className="text">
+                        0xc2132d05d31c914a87c6611c10748aeb04b58e8f
+                        </h2>
+                    </div>
+                }
 
 
 
