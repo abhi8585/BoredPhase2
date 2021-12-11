@@ -88,18 +88,93 @@ class WineInfo extends React.Component {
     }
 
     async lazyMint(e){
-        
-        this.setState({ mint : true});
-        return
-        // var existingImages = []
+        var existingCount = 0
+        var wineMintData = []
+        var wineIpfsHashes = []
+        const networkId = await this.props.web3.eth.net.getId();
+        const networkData = Wine.networks[networkId];
+        const contractData = await new this.props.web3.eth.Contract(Wine.abi, networkData.address )
+        const mintedImageHashes = await contractData.methods.getMintedImages().call({from: this.props.accounts[0]})
+        .then(function(result){
+            existingCount = parseInt(result)
+        });
+        for(existingCount+1;existingCount<this.props.data.length-1;existingCount++){
+          if(wineMintData.length<this.state.wineNumber){
+            wineMintData.push(this.props.data[existingCount])
+          }
+        }
+        console.log(wineMintData)
+         for (var i = 0;i<wineMintData.length;i++){
+          
+          var tempWineItem = wineMintData[i];
+          // var tempImageItem = tempWineItem["image"].split("/")[4]
+          const itemData = await JSON.stringify(tempWineItem)
+          const itemBuffer = await Buffer.from(itemData);
+          // // console.log(itemBuffer);
+          const fid = await ipfs.add(itemBuffer);
+          // console.log(fid.path)
+          wineIpfsHashes.push(fid.path)
+          // imageIpfsHashes.push(tempImageItem);
+
+        }
+        // console.log(wineIpfsHashes)
+        const addItem = await contractData.methods.mint(wineIpfsHashes,this.state.wineNumber).send(({ from : this.props.accounts[0]}))
+        .on('receipt', (receipt) => {
+          this.setState({ transactionHash : receipt["transactionHash"] })
+          this.setState({ blockHash : receipt["blockHash"] })
+          this.setState({ mint : true })
+        }).on('error', (receipt) => {
+          if(receipt["code"] == 4001){
+            alert("User denied transaction!! Please check")
+            return;
+          }
+        });
+             // ------------------
+    //     // sending email
+          init("user_ca1Ts0fdL8YuvJE1cUgtk");
+          var templateParams = {
+              "userName" : this.state.userName,
+              "userEmail" : this.state.userEmail,
+              "userShippingAddress" : this.state.userShippingAddress,
+              "transactionHash" : this.state.transactionHash,
+              "blockHash" : this.state.blockHash
+          }
+        emailjs.send('service_fonu0fq', 'template_uegm5or', templateParams)
+            .then(function(response) {
+              alert('CONGRATULATIONS FOR YOUR DIGITAL WINE!');
+        }, function(error) {
+           console.log('FAILED...', error);
+        });
+        return;
+        // var existingCount = 0
         // var wineMintData = []
         // const networkId = await this.props.web3.eth.net.getId();
         // const networkData = Wine.networks[networkId];
         // const contractData = await new this.props.web3.eth.Contract(Wine.abi, networkData.address );
-        // const mintedImageHashes = await contractData.methods.getMintedImages().call({from: '0x19cFF0b9E7a05f0b7dcdE3783A31dc3509E703E5'})
+        // console.log("getting contract data")
+        // const mintedImageHashes = await contractData.methods.getMintedImages().call({from: this.props.accounts[0]})
         // .then(function(result){
-        //     existingImages = result
+        //     existingCount = result
         // });
+        
+        // for (existingCount;existingCount<this.props.data.length-1;existingCount){
+        //   if(wineMintData.length < this.state.wineNumber){
+        //     wineMintData.push(this.props.data[existingCount])
+        //   }
+          
+        //   // var tempWineItem = this.props.data[Math.floor(Math.random() * this.props.data.length)];
+        //   // var tempImageItem = tempWineItem["image"].split("/")[4]
+        //   // const itemData = await JSON.stringify(tempWineItem)
+        //   // const itemBuffer = await Buffer.from(itemData);
+        //   // // console.log(itemBuffer);
+        //   // const fid = await ipfs.add(itemBuffer);
+        //   // wineIpfsHashes.push(fid.path)
+        //   // imageIpfsHashes.push(tempImageItem);
+
+        // }
+        // console.log(wineMintData)
+        // return
+        // console.log(existingCount)
         // for (var i=0;i<this.props.data.length-1;i++){
         //   var tempWineItem = this.props.data[i];
         //   // console.log(tempWineItem);
@@ -121,23 +196,7 @@ class WineInfo extends React.Component {
         // send data to ipfs and set hash
   
         
-        // if(!this.state.userName.length>0){
-        //   alert("Please Enter Name! Under Shipping Details!😕")
-        //   return
-        // }
-        // if(!this.state.userEmail.length>0){
-        //   alert("Please Enter Email! Under Shipping Details!😕")
-        //   return
-        // }
-        // if(!this.state.userShippingAddress.length>0){
-        //   alert("Please Enter Shipping Address! Under Shipping Details!😕")
-        //   return
-        // }
-  
-        // if(!this.state.ageCheck ){
-        //   alert("Verify your Age");
-        //   return;
-        // }
+        
         var wineIpfsHashes = [];
         var imageIpfsHashes = [];
         // for (var i=0;i<this.state.wineNumber;i++){
@@ -314,9 +373,9 @@ class WineInfo extends React.Component {
         // return
         // var transactionPrice = this.props.web3.utils.toWei("0.1", 'ether');
         // // // getting all the data
-        const networkId = await this.props.web3.eth.net.getId();
-        const networkData = Wine.networks[networkId];
-        const contractData = await new this.props.web3.eth.Contract(Wine.abi, networkData.address )
+        // const networkId = await this.props.web3.eth.net.getId();
+        // const networkData = Wine.networks[networkId];
+        // const contractData = await new this.props.web3.eth.Contract(Wine.abi, networkData.address )
         
         // console.log(contractData)
         // console.log([transactionPrice, networkId]);
@@ -326,41 +385,11 @@ class WineInfo extends React.Component {
         //       alert(hash);
         //   })
         // console.log(JSON.stringify(wineIpfsHashes),JSON  .stringify(imageIpfsHashes),JSON.stringify(this.state.wineNumber));
-        const addItem = await contractData.methods.mint(wineIpfsHashes,imageIpfsHashes,this.state.wineNumber).send(({ from : this.props.accounts[0]}))
-        .on('receipt', (receipt) => {
-          this.setState({ transactionHash : receipt["transactionHash"] })
-          this.setState({ blockHash : receipt["blockHash"] })
-          console.log(receipt)
-          console.log([this.state.transactionHash, this.state.blockHash])
-        }).on('error', (receipt) => {
-          if(receipt["code"] == 4001){
-            alert("User denied transaction!! Please check")
-            return;
-          }
-        });
+     
 
       
   
-        // ------------------
-    //     // sending email
-        init("user_ca1Ts0fdL8YuvJE1cUgtk");
-      var templateParams = {
-          "userName" : this.state.userName,
-          "userEmail" : this.state.userEmail,
-          "userShippingAddress" : this.state.userShippingAddress,
-          "transactionHash" : this.state.transactionHash,
-          "blockHash" : this.state.blockHash
-      }
-     emailjs.send('service_fonu0fq', 'template_uegm5or', templateParams)
-              .then(function(response) {
-                alert('CONGRATULATIONS FOR YOUR DIGITAL WINE!');
-          }, function(error) {
-             console.log('FAILED...', error);
-          });
-      
-        console.log("user initiated")
-  
-        this.setState({ redirect : true })
+   
   
      
       }
@@ -397,20 +426,31 @@ class WineInfo extends React.Component {
     }
 
     async handleTransferClick(){
-      
+      if(!this.state.userName.length>0){
+        alert("Please Enter Name! Under Shipping Details!😕")
+        return
+      }
+      if(!this.state.userEmail.length>0){
+        alert("Please Enter Email! Under Shipping Details!😕")
+        return
+      }
+      if(!this.state.userShippingAddress.length>0){
+        alert("Please Enter Shipping Address! Under Shipping Details!😕")
+        return
+      }
+
+      if(!this.state.ageCheck ){
+        alert("Verify your Age");
+        return;
+      }
       const usdtABI = [{"inputs":[],"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"owner","type":"address"},{"indexed":true,"internalType":"address","name":"spender","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"internalType":"address","name":"userAddress","type":"address"},{"indexed":false,"internalType":"address payable","name":"relayerAddress","type":"address"},{"indexed":false,"internalType":"bytes","name":"functionSignature","type":"bytes"}],"name":"MetaTransactionExecuted","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"bytes32","name":"role","type":"bytes32"},{"indexed":true,"internalType":"bytes32","name":"previousAdminRole","type":"bytes32"},{"indexed":true,"internalType":"bytes32","name":"newAdminRole","type":"bytes32"}],"name":"RoleAdminChanged","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"bytes32","name":"role","type":"bytes32"},{"indexed":true,"internalType":"address","name":"account","type":"address"},{"indexed":true,"internalType":"address","name":"sender","type":"address"}],"name":"RoleGranted","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"bytes32","name":"role","type":"bytes32"},{"indexed":true,"internalType":"address","name":"account","type":"address"},{"indexed":true,"internalType":"address","name":"sender","type":"address"}],"name":"RoleRevoked","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"internalType":"address","name":"from","type":"address"},{"indexed":true,"internalType":"address","name":"to","type":"address"},{"indexed":false,"internalType":"uint256","name":"value","type":"uint256"}],"name":"Transfer","type":"event"},{"inputs":[],"name":"CHILD_CHAIN_ID","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"CHILD_CHAIN_ID_BYTES","outputs":[{"internalType":"bytes","name":"","type":"bytes"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"DEFAULT_ADMIN_ROLE","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"DEPOSITOR_ROLE","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"ERC712_VERSION","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"ROOT_CHAIN_ID","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"ROOT_CHAIN_ID_BYTES","outputs":[{"internalType":"bytes","name":"","type":"bytes"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"owner","type":"address"},{"internalType":"address","name":"spender","type":"address"}],"name":"allowance","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"approve","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"account","type":"address"}],"name":"balanceOf","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"string","name":"name_","type":"string"}],"name":"changeName","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"decimals","outputs":[{"internalType":"uint8","name":"","type":"uint8"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"subtractedValue","type":"uint256"}],"name":"decreaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"},{"internalType":"bytes","name":"depositData","type":"bytes"}],"name":"deposit","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"userAddress","type":"address"},{"internalType":"bytes","name":"functionSignature","type":"bytes"},{"internalType":"bytes32","name":"sigR","type":"bytes32"},{"internalType":"bytes32","name":"sigS","type":"bytes32"},{"internalType":"uint8","name":"sigV","type":"uint8"}],"name":"executeMetaTransaction","outputs":[{"internalType":"bytes","name":"","type":"bytes"}],"stateMutability":"payable","type":"function"},{"inputs":[],"name":"getChainId","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"pure","type":"function"},{"inputs":[],"name":"getDomainSeperator","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"user","type":"address"}],"name":"getNonce","outputs":[{"internalType":"uint256","name":"nonce","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"}],"name":"getRoleAdmin","outputs":[{"internalType":"bytes32","name":"","type":"bytes32"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"},{"internalType":"uint256","name":"index","type":"uint256"}],"name":"getRoleMember","outputs":[{"internalType":"address","name":"","type":"address"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"}],"name":"getRoleMemberCount","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"},{"internalType":"address","name":"account","type":"address"}],"name":"grantRole","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"},{"internalType":"address","name":"account","type":"address"}],"name":"hasRole","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"spender","type":"address"},{"internalType":"uint256","name":"addedValue","type":"uint256"}],"name":"increaseAllowance","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"string","name":"name_","type":"string"},{"internalType":"string","name":"symbol_","type":"string"},{"internalType":"uint8","name":"decimals_","type":"uint8"},{"internalType":"address","name":"childChainManager","type":"address"}],"name":"initialize","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"name","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"},{"internalType":"address","name":"account","type":"address"}],"name":"renounceRole","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"bytes32","name":"role","type":"bytes32"},{"internalType":"address","name":"account","type":"address"}],"name":"revokeRole","outputs":[],"stateMutability":"nonpayable","type":"function"},{"inputs":[],"name":"symbol","outputs":[{"internalType":"string","name":"","type":"string"}],"stateMutability":"view","type":"function"},{"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},{"inputs":[{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transfer","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"address","name":"sender","type":"address"},{"internalType":"address","name":"recipient","type":"address"},{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"transferFrom","outputs":[{"internalType":"bool","name":"","type":"bool"}],"stateMutability":"nonpayable","type":"function"},{"inputs":[{"internalType":"uint256","name":"amount","type":"uint256"}],"name":"withdraw","outputs":[],"stateMutability":"nonpayable","type":"function"}]
       const usdtAddress = "0xc2132D05D31c914a87C6611C10748AEb04B58e8F"
       var tokenInst = await new this.props.web3.eth.Contract(usdtABI,usdtAddress)
       const transfer = await tokenInst.methods.transfer("0x027232Ed0657C7b4a041C6Bb345D24C9C7a65FD3","1").send(({ from : this.props.accounts[0]}))
       .on('receipt', (receipt) => {
-        // this.setState({ transactionHash : receipt["transactionHash"] })
-        // this.setState({ blockHash : receipt["blockHash"] })
-        
-        console.log(receipt)
-        // this.setState({ transferDone : true })
-        this.setState({ details : true})
         this.setState({ usdtTransactionHash : receipt["transactionHash"] })
         this.setState({ usdtBlockHash : receipt["blockHash"]})
+        this.setState({ details : true})
         // console.log([this.state.transactionHash, this.state.blockHash])
       }).on('error', (receipt) => {
         if(receipt["code"] == 4001){
@@ -590,17 +630,17 @@ class WineInfo extends React.Component {
 
 {this.state.details && !this.state.mint &&<div className="description">
                         <h3 className="title">Transfer Transaction hash</h3>
-                        <h2 className="text">
+                        <p className="text">
                         {this.state.usdtTransactionHash}
-                        </h2>
+                        </p>
                     </div>
                 }
 
 {this.state.details && !this.state.mint&&<div className="description">
                         <h3 className="title">Transfer Block hash</h3>
-                        <h2 className="text">
+                        <p className="text">
                         {this.state.usdtBlockHash}
-                        </h2>
+                        </p>
                     </div>
                 }
 
@@ -633,33 +673,33 @@ class WineInfo extends React.Component {
 
 {this.state.mint &&<div className="description">
                         <h3 className="title">USDT Transaction hash</h3>
-                        <h2 className="text">
-                        0xc2132d05d31c914a87c6611c10748aeb04b58e8f
-                        </h2>
+                        <p>
+                        {this.state.usdtTransactionHash}
+                        </p>
                     </div>
                 }
 
 {this.state.mint&&<div className="description">
                         <h3 className="title">USDT Block hash</h3>
-                        <h2 className="text">
-                        0xc2132d05d31c914a87c6611c10748aeb04b58e8f
-                        </h2>
+                        <p>
+                        {this.state.usdtBlockHash}
+                        </p>
                     </div>
                 }
     
     {this.state.mint &&<div className="description">
                         <h3 className="title">Mint Transaction hash</h3>
-                        <h2 className="text">
-                        0xc2132d05d31c914a87c6611c10748aeb04b58e8f
-                        </h2>
+                        <p className="text">
+                        {this.state.transactionHash}
+                        </p>
                     </div>
                 }
 
 {this.state.mint&&<div className="description">
                         <h3 className="title">Mint Block hash</h3>
-                        <h2 className="text">
-                        0xc2132d05d31c914a87c6611c10748aeb04b58e8f
-                        </h2>
+                        <p className="text">
+                        {this.state.blockHash}
+                        </p>
                     </div>
                 }
 
