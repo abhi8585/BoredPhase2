@@ -307,7 +307,7 @@ class WineInfo extends React.Component {
         //     console.log(receipt)
         //     console.log([this.state.transactionHash, this.state.blockHash])
         // }).on('error', (receipt) => {
-        //     if(receipt["code"] == 4001){
+        //     if(receipt["code"] == 4001){ 
         //     alert("User denied transaction")
         //     return;
         //     }
@@ -334,7 +334,7 @@ class WineInfo extends React.Component {
         // const addItem = await contractData.methods.mint("firstipfsfromui").send({ from : this.props.accounts[0] }).on('transactionHash', (hash) => {
         //       alert(hash);
         //   })
-        // console.log(JSON.stringify(wineIpfsHashes),JSON.stringify(imageIpfsHashes),JSON.stringify(this.state.wineNumber));
+        // console.log(JSON.stringify(wineIpfsHashes),JSON  .stringify(imageIpfsHashes),JSON.stringify(this.state.wineNumber));
         const addItem = await contractData.methods.mint(wineIpfsHashes,imageIpfsHashes,this.state.wineNumber).send(({ from : this.props.accounts[0]}))
         .on('receipt', (receipt) => {
           this.setState({ transactionHash : receipt["transactionHash"] })
