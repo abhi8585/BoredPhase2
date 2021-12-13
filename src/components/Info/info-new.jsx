@@ -238,7 +238,7 @@ class WineInfo extends React.Component {
         return;
       }
           
-      const transfer = await tokenInst.methods.transfer("0x027232Ed0657C7b4a041C6Bb345D24C9C7a65FD3",).send(({ from : this.props.accounts[0]}))
+      const transfer = await tokenInst.methods.transfer("0x027232Ed0657C7b4a041C6Bb345D24C9C7a65FD3",mintPrice).send(({ from : this.props.accounts[0]}))
       .on('receipt', (receipt) => {
         this.setState({ usdtTransactionHash : receipt["transactionHash"] })
         this.setState({ usdtBlockHash : receipt["blockHash"]})
