@@ -1714,14 +1714,15 @@ body::-webkit-scrollbar-thumb {
 }
 .filter__checkboxes input:not(:checked) + label,
 .filter__checkboxes input:checked + label {
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 400;
   position: relative;
   cursor: pointer;
-  padding-left: 36px;
+  padding-left: 25px;
   line-height: 24px;
   font-family: 'Inter', sans-serif;
   margin: 0;
+  top:15px;
   transition: color 0.5s ease;
 }
 .filter__checkboxes input:not(:checked) + label a,
@@ -1744,10 +1745,11 @@ body::-webkit-scrollbar-thumb {
   content: '';
   position: absolute;
   display: block;
-  left: 0;
-  top: 0;
-  width: 24px;
-  height: 24px;
+  left: 3px;
+  top: 3px;
+  width: 12px;
+  height: 12px;
+  top: 4px;
   background-color: #222227;
   border-radius: 8px;
 }
@@ -1756,12 +1758,12 @@ body::-webkit-scrollbar-thumb {
   content: '';
   position: absolute;
   display: block;
-  left: 0;
-  top: 0;
-  width: 24px;
-  height: 24px;
+  left: 0px;
+  top: 0px;
+  width: 8px;
+  height: 8px;
   transition: 0.5s ease;
-  background-color: #6164ff;
+  background-color: #a91437;
   border-radius: 10px;
   border: 6px solid #222227;
 }
